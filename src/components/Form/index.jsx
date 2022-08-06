@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useRef, useEffect } from 'react'
 import {
   FormControl,
   FormLabel,
@@ -46,9 +46,15 @@ const reducer = (state, action ) => {
 
 function Form() {
 
+  // using useRef in combination with useEffect to focus the name Input on page load
+  const nameRef = useRef()
+  useEffect(() => {
+    console.log(nameRef)
+    nameRef.current.focus()
+  }, [])
+
   const [state, dispatch] = useReducer(reducer, initState)
   
-
   const handleInputChange = (e) => {
     const key = e.target.name
     
@@ -81,12 +87,12 @@ function Form() {
     }
   }
 
-
   return (
     <Container mt="20">
       <FormControl p="10" bg="gray.600" color="gray.200" borderRadius="lg">
         <FormLabel fontSize="xl">Name</FormLabel>
         <Input
+          ref={nameRef}
           name="name"
           value={state.name.value}
           onChange={handleInputChange}
