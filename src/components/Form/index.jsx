@@ -9,89 +9,114 @@ import {
 } from '@chakra-ui/react'
 
 const initState = {
-  value: '',
-  touched: false,
-  error: null
+  name: {
+    value: '',
+    touched: false,
+    error: null
+  },
+  password: {
+    value: '',
+    touched: false,
+    error: null
+  }
 }
 
-const reducer = (state, { type, payload} ) => {
-  switch(type) {
-    case 'UPDATE':
+const reducer = (state, action ) => {
+  switch(action.type) {
+    case 'UPDATE_NAME':
       return {
-        value: payload.value,
-        touched: true,
-        error: payload.error
+        ...state,
+        name: action.payload.name
+      }
+
+    case 'UPDATE_PW':
+      return {
+        ...state,
+        password: action.payload.password
       }
     
     case 'RESET':
       return initState
     
     default:
-      throw new Error('Trying to dispatch an unknown action type of ', type)
+      throw new Error('Trying to dispatch an unknown action type of ', action.type)
   }
 }
 
 
 function Form() {
 
-  const [nameState, dispatchName] = useReducer(reducer, initState)
-  const [pwState, dispatchPw]  = useReducer(reducer, initState)
-
-  const handleNameChange = (e) => {
-    dispatchName({
-      type: 'UPDATE',
-      payload: {
-        value: e.target.value,
-        touched: true,
-        error: nameState.touched ? e.target.value.length < 3 ? true : null : null
-      }
-    })
-  }
-
-  const handlePwChange = (e) => {
-    dispatchPw({
-      type: 'UPDATE',
-      payload: {
-        value: e.target.value,
-        touched: true,
-        error: nameState.touched ? e.target.value.length < 6 ? true : null : null
-      }
-    })
-  }
-
+  const [state, dispatch] = useReducer(reducer, initState)
   
+
+  const handleInputChange = (e) => {
+    const key = e.target.name
+    
+    if (key === 'name') {
+      dispatch({
+        type: 'UPDATE_NAME',
+        payload: {
+          name : {
+            value: e.target.value,
+            touched: true,
+            error: state.name.touched ? e.target.value.length < 3 ? true : null : null
+          }
+        }
+      })
+    }
+    else if (key === 'password') {
+      dispatch({
+        type: 'UPDATE_PW',
+        payload: {
+          password : {
+            value: e.target.value,
+            touched: true,
+            error: state.password.touched ? e.target.value.length < 6 ? true : null : null
+          }
+        }
+      })
+    }
+    else {
+      throw new Error('Trying to dispatch for unknown key: ', key)
+    }
+  }
+
 
   return (
     <Container mt="20">
       <FormControl p="10" bg="gray.600" color="gray.200" borderRadius="lg">
-      <FormLabel fontSize="xl">Name</FormLabel>
-      <Input
-        value={nameState.value}
-        onChange={handleNameChange}
-        isInvalid={nameState.error}
-        errorBorderColor='crimson' 
-        type='text' 
-        fontSize="xl"/>
+        <FormLabel fontSize="xl">Name</FormLabel>
+        <Input
+          name="name"
+          value={state.name.value}
+          onChange={handleInputChange}
+          isInvalid={state.name.error}
+          errorBorderColor='crimson' 
+          type='text' 
+          fontSize="xl"
+        />
 
-      <FormLabel fontSize="xl" mt="5">Password</FormLabel>
-      <Input
-        value={pwState.value}
-        onChange={handlePwChange}
-        isInvalid={pwState.error}
-        errorBorderColor='crimson' 
-        type='password'
-         fontSize="xl"/>
+        <FormLabel fontSize="xl" mt="5">Password</FormLabel>
+        <Input
+          name="password"
+          value={state.password.value}
+          onChange={handleInputChange}
+          isInvalid={state.password.error}
+          errorBorderColor='crimson' 
+          type='password'
+          fontSize="xl"
+        />
 
-      <FormHelperText  color="gray.200">Validation FX powered by useReducer.</FormHelperText>
+        <FormHelperText  color="gray.200">Validation FX powered by useReducer.</FormHelperText>
 
-      <Button 
-        isDisabled={pwState.error || nameState.error || !nameState.touched || !pwState.touched}
-        colorScheme='teal' 
-        size='md' 
-        mt="5">
-        Submit
-      </Button>
-    </FormControl>
+        <Button 
+          isDisabled={state.password.error || state.name.error || !state.name.touched || !state.password.touched}
+          colorScheme='teal' 
+          size='md' 
+          mt="5">
+          Submit
+        </Button>
+      </FormControl>
     </Container>
     
   )
