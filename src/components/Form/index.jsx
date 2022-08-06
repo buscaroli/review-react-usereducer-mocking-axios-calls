@@ -85,7 +85,7 @@ function Form() {
       <FormHelperText  color="gray.200">Validation powered by useReducer.</FormHelperText>
 
       <Button 
-        isDisabled={pwState.error || nameState.error}
+        isDisabled={pwState.error || nameState.error || !nameState.touched || !pwState.touched}
         colorScheme='teal' 
         size='md' 
         mt="5">
