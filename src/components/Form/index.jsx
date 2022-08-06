@@ -49,7 +49,6 @@ function Form() {
   // using useRef in combination with useEffect to focus the name Input on page load
   const nameRef = useRef()
   useEffect(() => {
-    console.log(nameRef)
     nameRef.current.focus()
   }, [])
 
