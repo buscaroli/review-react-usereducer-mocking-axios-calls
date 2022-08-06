@@ -32,8 +32,6 @@ const reducer = (state, { type, payload} ) => {
 }
 
 
-
-
 function Form() {
 
   const [nameState, dispatchName] = useReducer(reducer, initState)
@@ -76,7 +74,7 @@ function Form() {
         fontSize="xl"/>
 
       <FormLabel fontSize="xl" mt="5">Password</FormLabel>
-      <Input 
+      <Input
         value={pwState.value}
         onChange={handlePwChange}
         isInvalid={pwState.error}
@@ -86,7 +84,11 @@ function Form() {
 
       <FormHelperText  color="gray.200">Validation powered by useReducer.</FormHelperText>
 
-      <Button colorScheme='teal' size='md' mt="5">
+      <Button 
+        isDisabled={pwState.error || nameState.error}
+        colorScheme='teal' 
+        size='md' 
+        mt="5">
         Submit
       </Button>
     </FormControl>
