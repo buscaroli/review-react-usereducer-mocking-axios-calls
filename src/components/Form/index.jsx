@@ -82,7 +82,7 @@ function Form() {
         type='password'
          fontSize="xl"/>
 
-      <FormHelperText  color="gray.200">Validation powered by useReducer.</FormHelperText>
+      <FormHelperText  color="gray.200">Validation FX powered by useReducer.</FormHelperText>
 
       <Button 
         isDisabled={pwState.error || nameState.error || !nameState.touched || !pwState.touched}
