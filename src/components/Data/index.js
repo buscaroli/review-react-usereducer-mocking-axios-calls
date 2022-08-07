@@ -1,30 +1,42 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Container, Text } from '@chakra-ui/react'
 import React from 'react'
+import { getData } from '../../utils/getData'
 
 function Data() {
   const [data, setData] = useState(null)
 
-  const handleButtonClick = () => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => response.json())
-      .then((json) => {
-        // console.log(json)
-        const users10 = json.slice(0, 10)
-        setData(users10)
-      })
+  const handleButtonClick = async () => {
+    const users = await getData()
+    // console.log('==== ', users)
+    setData(users)
   }
+
+  useEffect(() => {}, [data])
 
   return (
     <Container>
-      <Button onClick={handleButtonClick} colorScheme="teal" size="md" mt="5">
+      <Button
+        role="button"
+        data-testid="fetch-btn"
+        onClick={handleButtonClick}
+        colorScheme="teal"
+        size="md"
+        mt="5"
+      >
         Fetch
       </Button>
-      {!data && <Text>Click to show the Data!</Text>}
-      {data &&
-        data.map((user, idx) => {
-          return <p key={idx}>{user.title}</p>
-        })}
+      {!data && <Text data-testid="waiting-msg">Click to show the Data!</Text>}
+      <Container data-test-id="fetch-list">
+        {data &&
+          data.map((user, idx) => {
+            return (
+              <Text data-testid="item" fontSize="lg" key={idx}>
+                {user.title}
+              </Text>
+            )
+          })}
+      </Container>
     </Container>
   )
 }
