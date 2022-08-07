@@ -1,13 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import {
-  render,
-  screen,
-  userEvent,
-  fireEvent,
-  cleanup,
-  waitForElement,
-} from '@testing-library/react'
+import { render, screen, cleanup } from '@testing-library/react'
 import Data from './index'
 import { getData } from '../../utils/getData'
 

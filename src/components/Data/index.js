@@ -8,7 +8,6 @@ function Data() {
 
   const handleButtonClick = async () => {
     const users = await getData()
-    // console.log('==== ', users)
     setData(users)
   }
 

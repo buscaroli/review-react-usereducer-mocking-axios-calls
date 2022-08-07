@@ -22,6 +22,7 @@ const initState = {
 }
 
 const reducer = (state, action ) => {
+  console.log('**\n', state)
   switch(action.type) {
     case 'UPDATE_NAME':
       return {
@@ -64,7 +65,7 @@ function Form() {
           name : {
             value: e.target.value,
             touched: true,
-            error: state.name.touched ? e.target.value.length < 3 ? true : null : null
+            error: (state.name.touched && e.target.value.length < 3) ? true : null
           }
         }
       })
@@ -76,7 +77,7 @@ function Form() {
           password : {
             value: e.target.value,
             touched: true,
-            error: state.password.touched ? e.target.value.length < 6 ? true : null : null
+            error: (state.password.touched && e.target.value.length < 6) ? true : null
           }
         }
       })
@@ -88,9 +89,10 @@ function Form() {
 
   return (
     <Container mt="20">
-      <FormControl p="10" bg="gray.600" color="gray.200" borderRadius="lg">
+      <FormControl data-testid="form" p="10" bg="gray.600" color="gray.200" borderRadius="lg">
         <FormLabel fontSize="xl">Name</FormLabel>
         <Input
+          data-testid="nameInput"
           ref={nameRef}
           name="name"
           value={state.name.value}
@@ -103,6 +105,7 @@ function Form() {
 
         <FormLabel fontSize="xl" mt="5">Password</FormLabel>
         <Input
+          data-testid="passwordInput"
           name="password"
           value={state.password.value}
           onChange={handleInputChange}
@@ -114,7 +117,8 @@ function Form() {
 
         <FormHelperText  color="gray.200">Validation FX powered by useReducer.</FormHelperText>
 
-        <Button 
+        <Button
+          data-testid="submit-btn"
           isDisabled={state.password.error || state.name.error || !state.name.touched || !state.password.touched}
           colorScheme='teal' 
           size='md' 
